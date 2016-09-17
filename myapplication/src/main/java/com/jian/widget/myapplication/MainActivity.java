@@ -22,6 +22,6 @@ public class MainActivity extends AppCompatActivity {
         urls.add("http://y.gtimg.cn/music/common/upload/t_focus_info_iphone/34817.jpg");
         urls.add("http://y.gtimg.cn/music/common/upload/t_focus_info_iphone/34817.jpg");
         banner.setImageUrls(urls);
-        banner.setIndicatorsVisibility(true);
+        banner.setIndicatorsVisibility(false);
     }
 }
