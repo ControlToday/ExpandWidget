@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BannerView banner = (BannerView) findViewById(R.id.home_banner);
-        banner.setIndicatorsVisibility(false);
+        banner.setIndicatorsVisibility(true);
 
         ArrayList<String> urls = new ArrayList<>();
         urls.add("http://y.gtimg.cn/music/common/upload/t_focus_info_iphone/34738.jpg");

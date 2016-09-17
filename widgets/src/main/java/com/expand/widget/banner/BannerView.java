@@ -276,13 +276,15 @@ public class BannerView extends FrameLayout {
                 refreshIndicators();
             }
             // 设定选中点点的位置
-            float realPosition = viewPager.getCurrentItem() % imageUrls.size();
-            float trans = (indicatorWidth + indicatorMargin) * realPosition;
-            int maxTrans = indicatorsLayout.getWidth() - (indicatorMargin + indicatorWidth) / 2;
-            if (trans > maxTrans) {
-                trans = trans - indicatorsLayout.getWidth();
+            if(viewPager!=null) {
+                float realPosition = viewPager.getCurrentItem() % imageUrls.size();
+                float trans = (indicatorWidth + indicatorMargin) * realPosition;
+                int maxTrans = indicatorsLayout.getWidth() - (indicatorMargin + indicatorWidth) / 2;
+                if (trans > maxTrans) {
+                    trans = trans - indicatorsLayout.getWidth();
+                }
+                selectPoint.setTranslationX(trans);
             }
-            selectPoint.setTranslationX(trans);
         } else {
             removeView(indicatorsLayout);
             indicatorsLayout = null;
