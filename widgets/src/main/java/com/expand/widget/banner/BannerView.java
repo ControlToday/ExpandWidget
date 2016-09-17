@@ -108,6 +108,34 @@ public class BannerView extends FrameLayout {
     private void initChildView() {
         initViewPager();
         refreshIndicators();
+        // 让选中的点点动起来
+        // 只应初始化一次
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                if (indicatorsLayout != null && indicatorsLayout.getVisibility() == View.VISIBLE) {
+                    float realPosition = position % imageUrls.size() + positionOffset;
+                    float trans = (indicatorWidth + indicatorMargin) * realPosition;
+                    int maxTrans = indicatorsLayout.getWidth() - (indicatorMargin + indicatorWidth) / 2;
+                    if (trans > maxTrans) {
+                        trans = trans - indicatorsLayout.getWidth();
+                    }
+                    selectPoint.setTranslationX(trans);
+                }
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+    }
+
+    private void initAnimation() {
+        setAutoPlay(isAutoPlay);
     }
 
     private void initViewPager() {
@@ -119,11 +147,6 @@ public class BannerView extends FrameLayout {
         removeView(indicatorsLayout);
         indicatorsLayout = getIndicators();
         addView(indicatorsLayout);
-        setIndicatorMoves();
-    }
-
-    private void initAnimation() {
-        setAutoPlay(isAutoPlay);
     }
 
     @NonNull
@@ -240,37 +263,24 @@ public class BannerView extends FrameLayout {
         viewPager.setCurrentItem(pos);
     }
 
-    private void setIndicatorMoves() {
-        if (imageUrls == null || imageUrls.size() <= 0) {
-            return;
-        }
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                float realPosition = position % imageUrls.size() + positionOffset;
-                float trans = (indicatorWidth + indicatorMargin) * realPosition;
-                int maxTrans = indicatorsLayout.getWidth() - (indicatorMargin + indicatorWidth) / 2;
-                if (trans > maxTrans) {
-                    trans = trans - indicatorsLayout.getWidth();
-                }
-                selectPoint.setTranslationX(trans);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-    }
-
     public void setIndicatorsVisibility(boolean visibility) {
         if (visibility) {
-            indicatorsLayout.setVisibility(View.VISIBLE);
+            if (indicatorsLayout != null) {
+                indicatorsLayout.setVisibility(View.VISIBLE);
+            } else {
+                refreshIndicators();
+            }
+            // 设定选中点点的位置
+            float realPosition = viewPager.getCurrentItem() % imageUrls.size();
+            float trans = (indicatorWidth + indicatorMargin) * realPosition;
+            int maxTrans = indicatorsLayout.getWidth() - (indicatorMargin + indicatorWidth) / 2;
+            if (trans > maxTrans) {
+                trans = trans - indicatorsLayout.getWidth();
+            }
+            selectPoint.setTranslationX(trans);
         } else {
-            indicatorsLayout.setVisibility(View.GONE);
+            removeView(indicatorsLayout);
+            indicatorsLayout = null;
         }
     }
 
@@ -278,9 +288,5 @@ public class BannerView extends FrameLayout {
         this.imageUrls = imageUrls;
         refreshBannerAdapter();
         refreshIndicators();
-    }
-
-    public int getCurrentItem() {
-        return viewPager.getCurrentItem();
     }
 }

@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ExpandWidget.iml" filepath="$PROJECT_DIR$/ExpandWidget.iml" />
       <module fileurl="file://$PROJECT_DIR$/widgets/app.iml" filepath="$PROJECT_DIR$/widgets/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/widgets/widgets.iml" filepath="$PROJECT_DIR$/widgets/widgets.iml" />
     </modules>
   </component>
 </project>
