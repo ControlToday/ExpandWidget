@@ -26,6 +26,7 @@ public class BannerView extends FrameLayout {
     private Drawable defaultLoadingImage;
     private Drawable defaultLoadFailedImage;
     private boolean isAutoPlay;
+    private boolean indicatorsVisibility = true;
     private Drawable indicatorDrawableSelected;
     private Drawable indicatorDrawableUnselected;
     private int indicatorWidth;
@@ -196,18 +197,21 @@ public class BannerView extends FrameLayout {
         }
 
         // 选中点点,
-        selectPoint = new ImageView(getContext());
-        FrameLayout.LayoutParams selectParams =
-                new LayoutParams(indicatorWidth, indicatorHeight);
-        selectParams.leftMargin = indicatorMargin / 2;
-        selectParams.rightMargin = indicatorMargin / 2;
-        selectPoint.setLayoutParams(selectParams);
-        selectPoint.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        selectPoint.setImageDrawable(indicatorDrawableSelected);
-
+        if (indicatorSize >= 1) {
+            selectPoint = new ImageView(getContext());
+            FrameLayout.LayoutParams selectParams =
+                    new LayoutParams(indicatorWidth, indicatorHeight);
+            selectParams.leftMargin = indicatorMargin / 2;
+            selectParams.rightMargin = indicatorMargin / 2;
+            selectPoint.setLayoutParams(selectParams);
+            selectPoint.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            selectPoint.setImageDrawable(indicatorDrawableSelected);
+        }
         // 将选中点和默认点放入,放入FragmentLayout中
         parent.addView(indicators);
-        parent.addView(selectPoint);
+        if (indicatorSize >= 1) {
+            parent.addView(selectPoint);
+        }
 
         return parent;
 
@@ -264,6 +268,7 @@ public class BannerView extends FrameLayout {
     }
 
     public void setIndicatorsVisibility(boolean visibility) {
+        this.indicatorsVisibility = visibility;
         if (visibility) {
             if (indicatorsLayout != null) {
                 indicatorsLayout.setVisibility(View.VISIBLE);
@@ -287,6 +292,8 @@ public class BannerView extends FrameLayout {
     public void setImageUrls(ArrayList<String> imageUrls) {
         this.imageUrls = imageUrls;
         refreshBannerAdapter();
-        refreshIndicators();
+        if (indicatorsVisibility) {
+            refreshIndicators();
+        }
     }
 }
